@@ -1,0 +1,13 @@
+build
+.waf*
+tags
+.lock-wscript
+*.pyc
+*.patch
+doc/api.xml
+doc/api.html
+doc/changelog.html
+doc/node.1
+tmp/
+node
+node_g
