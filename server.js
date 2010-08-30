@@ -1,3 +1,5 @@
+require.paths.unshift('./npm')
+
 var app = require('express').createServer();
 
 app.get('/', function(req, res){
