@@ -1,4 +1,4 @@
-
+require.paths.unshift('./vendor')
 
 var app = require('express').createServer();
 app.get('/', function(req, res){
