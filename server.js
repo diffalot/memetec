@@ -9,5 +9,5 @@ app.get('/', function(req, res){
 app.listen(3000);
 
 
-var sys = require('sys');
-sys.puts("Server running at http://localhost:3000/");
+//var sys = require('sys');
+//sys.puts("Server running at http://localhost:3000/");
