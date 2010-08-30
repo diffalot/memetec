@@ -1,6 +1,6 @@
-require.paths.unshift('./vendor')
+//require.paths.unshift('./vendor')
 vrequire = function(lib) { 
-    require.paths.unshift("vendor/.npm/" + lib + "/active/package/lib");
+    require.paths.unshift("npm/" + lib + "/active/package/lib");
     return require(lib); 
 }
 var app = vrequire('express').createServer();
