@@ -54,8 +54,8 @@ if (process.env.PORT) {
     settings.port = process.env.PORT;
     settings.redis_host = process.env.REDIS_HOST;
     settings.redis_pass = process.env.REDIS_PASS;
-    //twitter_key = process.env.TWITTER_KEY;
-    //twitter_secret = process.env.TWITTER_SECRET;
+    settings.twitter_key = process.env.TWITTER_KEY;
+    settings.twitter_secret = process.env.TWITTER_SECRET;
     }
 else {
     settings = JSON.parse( fs.readFileSync('development-settings.json', encoding='utf8') );
@@ -129,6 +129,8 @@ app.get('/:meme', function(req, res){
 
 
 app.get('/', function(req, res){
+    res.render('home');
+    /*
     if (req.session['access_token']) {
       sys.puts(JSON.stringify(req.session));
       return Twitter.getProtectedResource(
@@ -154,6 +156,7 @@ app.get('/', function(req, res){
           }
         });
       }
+      */
     });
 
 
