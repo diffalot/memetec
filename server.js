@@ -30,7 +30,18 @@ var sys = require('sys'),
 
 
 /**
-  Are we in Development or Production Modea
+  Are we in Development or Production Mode
+
+  If you're running this on your own computer, 
+  copy development-settings.json.sample to development-settings.json 
+  and modify there.
+
+  otherwise, make sure you have the following environment variables included 
+  in your hosting environment, the handy heroku command to do this is:
+
+      heroku config:add REDIS_HOST=something.redistogo.com REDIS_PORT=9379 REDIS_PASS=something
+
+  http://docs.heroku.com/config-vars
 **/
 
 var settings = undefined;
