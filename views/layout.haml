@@ -5,9 +5,13 @@
     %title mem.ec
     %script{ src: 'js/jquery.js' }
   %body
-    %h1 mem.ec
-    %ul#login
-      %li sign in
-      %li sign up
-    %ul#menu
-    != body
+    %header
+      %h1 mem.ec
+      %ul#login
+        %li sign in
+        %li sign up
+      %ul#menu
+    %content
+      != body
+    %footer
+      %p powered by the federation of memes
