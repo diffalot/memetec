@@ -5,6 +5,6 @@
     "express":"",
     "hamljs":"",
     "oauth":""
-    //"redis":""
+    //"redis-client":"" is not yet in npm
   }
 }

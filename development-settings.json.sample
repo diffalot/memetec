@@ -1,0 +1,9 @@
+{
+  "environment": "Development",
+  "port": "3000",
+  "redis_host": "localhost",
+  "redis_port": "9379",
+  "redis_pass": "password",
+  "twitter_key": "",
+  "twitter_secret": ""
+}
