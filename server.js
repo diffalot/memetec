@@ -1,4 +1,5 @@
 /**
+
   Memetec
 
   Memetec is a software platform for the creative reuse of media.
@@ -14,6 +15,7 @@
   The Memetec Federation, Light Corporation, Inc., and Andrew Davis
 
   Stop by #memetec on freenode.net irc to discuss this project.
+
 **/
 
 
@@ -30,17 +32,18 @@ var sys = require('sys'),
 
 
 /**
-  Are we in Development or Production Mode
+  Are we in a Development or Production environment
 
   If you're running this on your own computer, 
   copy development-settings.json.sample to development-settings.json 
-  and modify there.
+  and modify.
 
-  otherwise, make sure you have the following environment variables included 
-  in your hosting environment, the handy heroku command to do this is:
+  Heroku: make sure you have the following environment variables included 
+  in your production environment, the handy heroku config command to do this is:
 
       heroku config:add REDIS_HOST=something.redistogo.com REDIS_PORT=9379 REDIS_PASS=something
 
+  * Make sure you don't set the PORT variable, heroku takes care of that for you.
   http://docs.heroku.com/config-vars
 **/
 
@@ -53,9 +56,9 @@ if (process.env.PORT) {
     settings.redis_pass = process.env.REDIS_PASS;
     //twitter_key = process.env.TWITTER_KEY;
     //twitter_secret = process.env.TWITTER_SECRET;
-  }
+    }
 else {
-  settings = JSON.parse( fs.readFileSync('development-settings.json', encoding='utf8') );
+    settings = JSON.parse( fs.readFileSync('development-settings.json', encoding='utf8') );
   }
 
 
