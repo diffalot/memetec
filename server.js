@@ -51,6 +51,7 @@ var settings = {};
 
 if (process.env.PORT) {
     settings.environment = "Production";
+    settings.host = "mem.ec";
     settings.port = process.env.PORT;
     settings.redis_host = process.env.REDIS_HOST;
     settings.redis_pass = process.env.REDIS_PASS;
@@ -165,4 +166,4 @@ app.get('/', function(req, res){
 **/
 
 app.listen(parseInt( settings.port ), null);
-sys.puts(settings.environment + " server running at http://localhost:" + settings.port + "/");
+sys.puts(settings.environment + " server running at http://" + settings.host + ":" + settings.port + "/");

@@ -1,5 +1,6 @@
 {
   "environment": "Development",
+  "host": "localhost",
   "port": "3000",
   "redis_host": "localhost",
   "redis_port": "9379",
