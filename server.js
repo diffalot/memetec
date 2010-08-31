@@ -1,14 +1,22 @@
 require.paths.unshift('./npm')
 
+var sys = require('sys'),
+    haml = require('hamljs');
+
 var app = require('express').createServer();
 
-app.get('/', function(req, res){
-    res.send('Hello World');
+app.set('view engine', 'haml');
+
+app.configure(function(){
+    app.use(require('express').staticProvider(__dirname + '/public'));
     });
 
-//app.listen(3000);
-app.listen(parseInt(process.env.PORT || 8000), null)
+app.get('/', function(req, res){
+    res.render('default');
+    });
 
+// Start listening on heroku port or localhost:3000 if we're running locally
+app.listen(parseInt(process.env.PORT || 3000), null);
 
-var sys = require('sys');
-sys.puts("Server running at http://localhost:8000/");
+// Log that we're up and running
+sys.puts("Server running at http://localhost:3000/");
