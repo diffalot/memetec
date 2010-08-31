@@ -44,13 +44,15 @@ var sys = require('sys'),
   http://docs.heroku.com/config-vars
 **/
 
+var settings = {};
+
 if (process.env.PORT) {
-  var settings.environment = "Production";
-  settings.port = process.env.PORT;
-  settings.redis_host = process.env.REDIS_HOST;
-  settings.redis_pass = process.env.REDIS_PASS;
-  //settings.twitter_key = process.env.TWITTER_KEY;
-  //settings.twitter_secret = process.env.TWITTER_SECRET;
+    settings.environment = "Production";
+    settings.port = process.env.PORT;
+    settings.redis_host = process.env.REDIS_HOST;
+    settings.redis_pass = process.env.REDIS_PASS;
+    //twitter_key = process.env.TWITTER_KEY;
+    //twitter_secret = process.env.TWITTER_SECRET;
   }
 else {
   settings = JSON.parse( fs.readFileSync('development-settings.json', encoding='utf8') );
