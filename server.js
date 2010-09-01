@@ -120,7 +120,8 @@ app.get('/:meme', function(req, res){
         locals: {
           meme: req.params.meme,
           host: settings.host,
-          base: settings.base
+          base: settings.base,
+          title: req.params.meme + '  [ ' + settings.host + ' ]'
           }
         });
       }
@@ -135,7 +136,8 @@ app.get('/', function(req, res){
     res.render('home', {
         locals: {
           host: settings.host,
-          base: settings.base
+          base: settings.base,
+          title: '[ ' + settings.host + ' ]'
           }
         });
 /*
