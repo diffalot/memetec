@@ -51,12 +51,16 @@ var sys = require('sys'),
 var settings = {};
 
 if (process.env.PORT) {
+
+    redis_url = require('url').parse(process.env.REDISTOGO_URL);
+
     settings.environment = "Production";
     settings.host = "mem.ec";
     settings.base = "http://mem.ec/";
     settings.port = process.env.PORT;
-    settings.redis_host = process.env.REDIS_HOST;
-    settings.redis_pass = process.env.REDIS_PASS;
+    settings.redis_host = redis_url.hostname;
+    settings.redis_pass = redis_url.auth.split(':')[1];
+    settings.redis_port = redis_url.host.split(redis_url.hostname)[1].replace(':', '');
     settings.twitter_key = process.env.TWITTER_KEY;
     settings.twitter_secret = process.env.TWITTER_SECRET;
     }
