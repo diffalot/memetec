@@ -5,6 +5,7 @@
     "express":"",
     "connect":"",
     "connect-redis":"",
+    "mongoose":"",
     "oauth":"",
     "jade":""
     //"redis-client":"" is not yet in npm
