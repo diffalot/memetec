@@ -79,8 +79,6 @@ var RedisCredentials = {
     port: parseInt(settings.redis_port)
     };
 
-var redis = require('redis-client').createClient(RedisCredentials.port, RedisCredentials.host);
-
 
 /**
   We're using twitter for authentication
@@ -95,9 +93,6 @@ var Twitter = new oauth.OAuth(
     null,
     'HMAC-SHA1'
     );
-if (RedisCredentials.pass) {
-    redis.auth(RedisCredentials.pass);
-    }
 
 
 /**
