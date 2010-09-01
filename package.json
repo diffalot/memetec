@@ -4,6 +4,7 @@
   "dependencies":{
     "express":"",
     "connect":"",
+    "connect-redis":"",
     "oauth":"",
     "jade":""
     //"redis-client":"" is not yet in npm
