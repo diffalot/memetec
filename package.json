@@ -3,9 +3,8 @@
   "version":"0.0.1",
   "dependencies":{
     "express":"",
-    "jade":"",
-    "hamljs":"",
-    "oauth":""
+    "oauth":"",
+    "jade":""
     //"redis-client":"" is not yet in npm
   }
 }

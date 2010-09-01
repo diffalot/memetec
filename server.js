@@ -28,7 +28,7 @@ var sys = require('sys'),
     fs = require('fs'),
     express = require('express'),
     oauth = require('oauth'),
-    haml = require('hamljs');
+    jade = require('jade');
 
 
 /**
@@ -52,6 +52,7 @@ var settings = {};
 if (process.env.PORT) {
     settings.environment = "Production";
     settings.host = "mem.ec";
+    settings.base = "http://mem.ec/";
     settings.port = process.env.PORT;
     settings.redis_host = process.env.REDIS_HOST;
     settings.redis_pass = process.env.REDIS_PASS;
@@ -81,12 +82,12 @@ var redis = require('redis-client').createClient(RedisCredentials.port, RedisCre
 **/
 
 var Twitter = new oauth.OAuth(
-    'http://api.twitter.com/oauth/request_token', 
-    'http://api.twitter.com/oauth/access_token', 
-    settings.twitter_key, 
-    settings.twitter_secret, 
-    '1.0', 
-    null, 
+    'http://api.twitter.com/oauth/request_token',
+    'http://api.twitter.com/oauth/access_token',
+    settings.twitter_key,
+    settings.twitter_secret,
+    '1.0',
+    null,
     'HMAC-SHA1'
     );
 if (RedisCredentials.pass) {
@@ -99,7 +100,7 @@ if (RedisCredentials.pass) {
 **/
 
 var app = express.createServer();
-app.set('view engine', 'haml');
+app.set('view engine', 'jade');
 app.configure(function(){
     app.use(express.staticProvider(__dirname + '/public'));
     });
@@ -117,7 +118,9 @@ app.get('/:meme', function(req, res){
     if (req.params.meme) {
       res.render('meme', {
         locals: {
-          meme: req.params.meme
+          meme: req.params.meme,
+          host: settings.host,
+          base: settings.base
           }
         });
       }
@@ -128,10 +131,14 @@ app.get('/:meme', function(req, res){
     });
 
 
-
 app.get('/', function(req, res){
-    res.render('home');
-    /*
+    res.render('home', {
+        locals: {
+          host: settings.host,
+          base: settings.base
+          }
+        });
+/*
     if (req.session['access_token']) {
       sys.puts(JSON.stringify(req.session));
       return Twitter.getProtectedResource(
@@ -150,16 +157,34 @@ app.get('/', function(req, res){
         );
       } 
     else {
-      return res.render('home', {
-        locals: {
-          user: "anonymous",
-          anon: true
-          }
-        });
+      return res.render('login');
       }
-      */
+*/
     });
 
+/*
+app.get('/login', function(req, res) {
+        return Twitter.getOAuthRequestToken(function(error, token, secret, url, params) {
+                req.session['token'] = token;
+                      req.session['secret'] = secret;
+                            sys.puts(("Request Token: " + (token)));
+                                  sys.puts(("Request Secret: " + (secret)));
+                                        return res.redirect(("http://api.twitter.com/oauth/authenticate?oauth_token=" + (token)));
+                                            });
+          });
+
+  app.get('/callback', function(req, res) {
+          return Twitter.getOAuthAccessToken(req.session['token'], req.session['secret'], function(error, access_token, access_secret, params) {
+                  sys.puts(("Access Token: " + (access_token)));
+                        sys.puts(("Access Secret: " + (access_secret)));
+                              sys.puts(("Params: " + (JSON.stringify(params))));
+                                    req.session['access_token'] = access_token;
+                                          req.session['access_secret'] = access_secret;
+                                                return res.redirect('/');
+                                                    });
+            });
+
+*/
 
 /**
   Let's go!

@@ -1,0 +1,17 @@
+!!! 5
+
+html
+  head
+    title= host
+    base(href: base)
+    script{ src: 'js/jquery.js' }
+  body
+    header
+      h1
+        a(href: './')= host
+      ul#menu
+    content
+      != body
+    footer
+      p powered by 
+        a(href: 'http://mem.ec/') the federation of memes
