@@ -28,6 +28,7 @@ var sys = require('sys'),
     oauth = require('oauth'),
     connect = require('connect'),
     redis_store = require('connect-redis'),
+    mongoose = require('mongoose').Mongoose,
     express = require('express'),
     jade = require('jade');
 
@@ -58,6 +59,7 @@ if (process.env.PORT) {
     settings.host = "mem.ec";
     settings.base = "http://mem.ec/";
     settings.port = process.env.PORT;
+    settings.mongo_url = process.env.MONGOHQ_URL;
     settings.redis_host = redis_url.hostname;
     settings.redis_pass = redis_url.auth.split(':')[1];
     settings.redis_port = parseInt(redis_url.host.split(redis_url.hostname)[1].replace(':', ''));
@@ -80,14 +82,22 @@ var session_store = new redis_store({
         port: settings.redis_port,
         }) 
 
-var dbAuth = function() { session_store.client.auth( settings.redis_pass ); }
-session_store.client.addListener('connected', dbAuth);
-session_store.client.addListener('reconnected', dbAuth);
+var storeAuth = function() { session_store.client.auth( settings.redis_pass ); sys.puts('connected to redis'); }
+session_store.client.addListener('connected', storeAuth);
+session_store.client.addListener('reconnected', storeAuth);
 
 
 /**
-  We're using twitter for authentication
-**/
+  * Setup A MongoDB connection for Meme storage
+
+var db = mongoose.connect('mongodb://localhost/test'),
+    Memes = mongoose.noSchema('memes',db);
+ */
+
+
+/**
+  * We're using twitter for authentication
+ */
 
 var Twitter = new oauth.OAuth(
     'http://api.twitter.com/oauth/request_token',
@@ -214,3 +224,4 @@ app.dynamicHelpers({
 
 app.listen(parseInt( settings.port ), null);
 sys.puts(settings.environment + " server running at http://" + settings.host + ":" + settings.port + "/");
+sys.puts(sys.inspect(settings));
