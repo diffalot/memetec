@@ -25,9 +25,9 @@
 
 require.paths.unshift('./npm')
 var sys = require('sys'),
-    fs = require('fs'),
     oauth = require('oauth'),
     connect = require('connect'),
+    redis_store = require('connect-redis'),
     express = require('express'),
     jade = require('jade');
 
@@ -60,12 +60,12 @@ if (process.env.PORT) {
     settings.port = process.env.PORT;
     settings.redis_host = redis_url.hostname;
     settings.redis_pass = redis_url.auth.split(':')[1];
-    settings.redis_port = redis_url.host.split(redis_url.hostname)[1].replace(':', '');
+    settings.redis_port = parseInt(redis_url.host.split(redis_url.hostname)[1].replace(':', ''));
     settings.twitter_key = process.env.TWITTER_KEY;
     settings.twitter_secret = process.env.TWITTER_SECRET;
     }
 else {
-    settings = JSON.parse( fs.readFileSync('development-settings.json', encoding='utf8') );
+    settings = JSON.parse( require('fs').readFileSync('development-settings.json', encoding='utf8') );
   }
 
 
@@ -73,11 +73,16 @@ else {
   Setup the Redis connection for user/session management
 **/
 
-var RedisCredentials = {
-    host: settings.redis_host,
-    pass: settings.redis_pass,
-    port: parseInt(settings.redis_port)
-    };
+var session_store = new redis_store({ 
+        maxAge: 60000 * 60 * 24 * 28,
+        reapInterval: 60000 *60 * 24 * 7,
+        host: settings.redis_host,
+        port: settings.redis_port,
+        }) 
+
+var dbAuth = function() { session_store.client.auth( settings.redis_pass ); }
+session_store.client.addListener('connected', dbAuth);
+session_store.client.addListener('reconnected', dbAuth);
 
 
 /**
@@ -99,7 +104,11 @@ var Twitter = new oauth.OAuth(
   Setup the Express Application
 **/
 
-var app = express.createServer(connect.cookieDecoder(), connect.session());
+var app = express.createServer(
+    connect.cookieDecoder(), 
+    connect.session({ 
+      store: session_store      })
+    );
 app.set('view engine', 'jade');
 app.configure(function(){
     app.use(express.staticProvider(__dirname + '/public'));
