@@ -26,9 +26,9 @@
 require.paths.unshift('./npm')
 var sys = require('sys'),
     fs = require('fs'),
-    express = require('express'),
-    connect = require('connect'),
     oauth = require('oauth'),
+    connect = require('connect'),
+    express = require('express'),
     jade = require('jade');
 
 
@@ -179,7 +179,13 @@ app.get('/', function(req, res){
         );
       } 
     else {
-      return res.render('login');
+      return res.render('login', {
+            locals: {
+              host: settings.host,
+              base: settings.base,
+              title: '[ ' + settings.host + ' ]'
+              }
+            });
       }
     });
 
