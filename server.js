@@ -27,6 +27,7 @@ require.paths.unshift('./npm')
 var sys = require('sys'),
     fs = require('fs'),
     express = require('express'),
+    connect = require('connect'),
     oauth = require('oauth'),
     jade = require('jade');
 
@@ -99,7 +100,7 @@ if (RedisCredentials.pass) {
   Setup the Express Application
 **/
 
-var app = express.createServer();
+var app = express.createServer(connect.cookieDecoder(), connect.session());
 app.set('view engine', 'jade');
 app.configure(function(){
     app.use(express.staticProvider(__dirname + '/public'));
@@ -113,6 +114,32 @@ app.configure(function(){
   /login    --> start Twitter oauth
   /callback --> register a session
 **/
+
+app.get('/login', function(req, res) {
+    return Twitter.getOAuthRequestToken(function(error, token, secret, url, params) {
+      req.session['token'] = token;
+      req.session['secret'] = secret;
+      //sys.puts(("Request Token: " + (token)));
+      //sys.puts(("Request Secret: " + (secret)));
+      return res.redirect(("http://api.twitter.com/oauth/authenticate?oauth_token=" + (token)));
+      });
+    });
+
+app.get('/callback', function(req, res) {
+    return Twitter.getOAuthAccessToken(
+      req.session['token'], 
+      req.session['secret'], 
+      function(error, access_token, access_secret, params) {
+        sys.puts(("Access Token: " + (access_token)));
+        sys.puts(("Access Secret: " + (access_secret)));
+        sys.puts(("Params: " + (JSON.stringify(params))));
+        req.session['access_token'] = access_token;
+        req.session['access_secret'] = access_secret;
+        return res.redirect('/');
+        }
+      );
+    });
+
 
 app.get('/:meme', function(req, res){
     if (req.params.meme) {
@@ -133,14 +160,6 @@ app.get('/:meme', function(req, res){
 
 
 app.get('/', function(req, res){
-    res.render('home', {
-        locals: {
-          host: settings.host,
-          base: settings.base,
-          title: '[ ' + settings.host + ' ]'
-          }
-        });
-/*
     if (req.session['access_token']) {
       sys.puts(JSON.stringify(req.session));
       return Twitter.getProtectedResource(
@@ -149,10 +168,11 @@ app.get('/', function(req, res){
         req.session['access_token'],
         req.session['access_secret'],
         function(error, data, response) {
-          return res.render('home', {
+          res.render('home', {
             locals: {
-              user: JSON.parse(data),
-              anon: false
+              host: settings.host,
+              base: settings.base,
+              title: '[ ' + settings.host + ' ]'
               }
             });
           }
@@ -161,32 +181,18 @@ app.get('/', function(req, res){
     else {
       return res.render('login');
       }
-*/
     });
 
-/*
-app.get('/login', function(req, res) {
-        return Twitter.getOAuthRequestToken(function(error, token, secret, url, params) {
-                req.session['token'] = token;
-                      req.session['secret'] = secret;
-                            sys.puts(("Request Token: " + (token)));
-                                  sys.puts(("Request Secret: " + (secret)));
-                                        return res.redirect(("http://api.twitter.com/oauth/authenticate?oauth_token=" + (token)));
-                                            });
-          });
 
-  app.get('/callback', function(req, res) {
-          return Twitter.getOAuthAccessToken(req.session['token'], req.session['secret'], function(error, access_token, access_secret, params) {
-                  sys.puts(("Access Token: " + (access_token)));
-                        sys.puts(("Access Secret: " + (access_secret)));
-                              sys.puts(("Params: " + (JSON.stringify(params))));
-                                    req.session['access_token'] = access_token;
-                                          req.session['access_secret'] = access_secret;
-                                                return res.redirect('/');
-                                                    });
-            });
+/**
+  Express Application Helpers
+**/
 
-*/
+app.dynamicHelpers({
+     session: function(req, res){
+       return req.session;
+       }
+     });
 
 /**
   Let's go!
