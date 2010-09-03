@@ -71,12 +71,8 @@ else {
   }
 
 /**
-  * Setup A MongoDB connection for Meme storage
-
-var db = mongoose.connect('mongodb://localhost/test'),
-    Memes = mongoose.noSchema('memes',db);
+  * Setup A MongoDB for Meme storage
  */
-
 
 mongoose.model('Meme', {
 
@@ -84,10 +80,10 @@ mongoose.model('Meme', {
     title: String,
     version: {
       user: String,
-      timestamp: Datetime,
+      timestamp: String,
       smil: String,
-      }
-    }
+      },
+    },
 
   indexes: [
     [[title],[version.user],[version.timestamp]],
@@ -100,13 +96,18 @@ mongoose.model('Meme', {
       }
     },
   }
-  
-  // Memes Contain Users
-
 ); // end of mongoose.model.meme
 
+/*
+  * Setup a connection to the database ser4ver 
+*/
 
-db.meme.save({title: 'A Short Tale', user:'papyromancer', smil: '<XML>'});
+
+var db = mongoose.connect(settings.mongo_url),
+        Memes = mongoose.noSchema('memes',db);
+
+
+//db.meme.save({title: ':)', user:'papyromancer', smil: '<XML>'});
 
 /**
   Setup the Redis connection for user/session management
