@@ -70,6 +70,43 @@ else {
     settings = JSON.parse( require('fs').readFileSync('development-settings.json', encoding='utf8') );
   }
 
+/**
+  * Setup A MongoDB connection for Meme storage
+
+var db = mongoose.connect('mongodb://localhost/test'),
+    Memes = mongoose.noSchema('memes',db);
+ */
+
+
+mongoose.model('Meme', {
+
+  types: {
+    title: String,
+    version: {
+      user: String,
+      timestamp: Datetime,
+      smil: String,
+      }
+    }
+
+  indexes: [
+    [[title],[version.user],[version.timestamp]],
+    [[version.user],[version.timestamp]]
+    ],
+
+  setters: {
+    title: function(v){
+      return this.v.capitalize();
+      }
+    },
+  }
+  
+  // Memes Contain Users
+
+); // end of mongoose.model.meme
+
+
+db.meme.save({title: 'A Short Tale', user:'papyromancer', smil: '<XML>'});
 
 /**
   Setup the Redis connection for user/session management
@@ -86,13 +123,6 @@ var storeAuth = function() { session_store.client.auth( settings.redis_pass ); s
 session_store.client.addListener('connected', storeAuth);
 session_store.client.addListener('reconnected', storeAuth);
 
-
-/**
-  * Setup A MongoDB connection for Meme storage
-
-var db = mongoose.connect('mongodb://localhost/test'),
-    Memes = mongoose.noSchema('memes',db);
- */
 
 
 /**
