@@ -11,10 +11,23 @@
   For video hosting, the sytem uses a Kaltura Server.  For more information
   plese visit http://html5video.org/ and http://kaltura.org/
 
-  © Copyright 2010
-  The Memetec Federation, Light Corporation, Inc., and Andrew Davis
-
   Stop by #memetec on freenode.net irc to discuss this project.
+
+  Memtec - Video Editing in the Browser
+  Copyright (C) 2010  Andrew Davis
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 **/
 
@@ -102,9 +115,9 @@ mongoose.model('Meme', {
   * Setup a connection to the database ser4ver 
 */
 
-
 var db = mongoose.connect(settings.mongo_url),
         Memes = mongoose.noSchema('memes',db);
+
 
 
 //db.meme.save({title: ':)', user:'papyromancer', smil: '<XML>'});
