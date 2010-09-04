@@ -89,6 +89,12 @@ else {
 
 mongoose.model('Meme', {
 
+  properties: ['title', { 
+                version: [
+                  'user', 
+                  'timestamp', 
+                  'smil', ] } ],
+
   types: {
     title: String,
     version: {
