@@ -1,0 +1,24 @@
+# System Overview
+
+* an implementation of the metavid/kaltura html5 video sequencer designed for cultural expression rather than academic or archival use
+* Memes are stored first by title, then by user, then by timestamp.
+** That means that users don't own the idea they are voicing their opinion upon, but nonetheless they may take ownership of their manipulation of that idea via their personal edits of the meme, and they can share the iteration with others
+** url paths are:
+*** http://mem.ec/
+*** <meme_title>/<username>/<timestamp> ::--> That's specific enough.
+*** <meme title>/<username> ::--> you get that user's most recent version
+*** <meme title> ::--> you get the most recent edit from the pool of all edits                                                               
+**** Should be compiled through analysis of all versions of a meme, but that's too difficult a programming task to accomplish before the conference
+**** It would make sense to do diffs between edits of the video and parent<-->child relationships with this stuff to generatively, or through a/b analysis of video attention, combine most popular edit segments into an 'anti-master.'
+
+unfinished mem.ec source: http://github.com/papyromancer/memetec
+
+# Notes
+
+I get a little confused about how to synchronize the data store on client with a document storage system on the server side.  It seems that a swarm transport data protocol would be the most effective soilution to sync once on save to the cloud of interested clients.
+
+Android and iPhone upload clients would be nice.
+
+It's important that people be able to add video, audio, images and text from anywhere on the web into their memes, so bookmarklets andextensions are necessary to make viewing any webpage a vector for exploring ones own creativity.
+
+Because so much media is being used, all media should be fingerprinted to determine if the media is already available in the system at large.  This is a processing intensive task, and should be performed by a dedicated cluster.  If an item is found to exist, it should be pruned from the dataset and its reference replaced with the highest quality version of that media that is available.
