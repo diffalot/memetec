@@ -1,7 +1,8 @@
 # System Overview
 
+<pre>
 * an implementation of the metavid/kaltura html5 video sequencer designed for cultural expression rather than academic or archival use
-* Memes are stored first by title, then by user, then by timestamp.
+* Memes are stored first by title, then by user, then by timestamp
 ** That means that users don't own the idea they are voicing their opinion upon through editing the video, but nonetheless they may take ownership of their manipulation of that idea through urls for their personal edits of the meme, and they can give and take edits from one another within a single meme namespace
 ** url paths are:
 *** http://mem.ec/
@@ -15,6 +16,7 @@
 ***** an editor choosing not to merge your diff back into their edit is a B
 ***** an editor flagging your diff based on their edit as abuse is a B-
 **** (this will not be finished by the conference.  v0.1 of http://mem.ec will display the most popular edit here)
+</pre>
 
 unfinished mem.ec source: http://github.com/papyromancer/memetec
 
