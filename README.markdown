@@ -5,9 +5,9 @@
  * That means that users don't own the idea they are voicing their opinion upon through editing the video, but nonetheless they may take ownership of their manipulation of that idea through urls for their personal edits of the meme, and they can give and take edits from one another within a single meme namespace
  * url paths are:
   * http://mem.ec/
-  * <meme_title>/<username>/<timestamp> ::--> That's specific enough.
-  * <meme title>/<username> ::--> you get that user's most recent version
-  * <meme title> ::--> a version compiled from all edit differences ranked by popularity
+  * [meme title]/[username]/[timestamp] ::--> That's specific enough.
+  * [meme title]/[username] ::--> you get that user's most recent version
+  * [meme title] ::--> a version compiled from all edit differences ranked by popularity
    * Based on parent child relationships of the video edit diffs 
    * Popularity of diff segments are tested continually via A/B ranking, on this, the _anti-master_ of the meme
     * merging someone else's edit segment into yours is an A+ for that diff
