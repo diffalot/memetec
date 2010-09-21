@@ -89,11 +89,14 @@ else {
 
 mongoose.model('Meme', {
 
-  properties: ['title', { 
+  collection : 'memes',
+
+  /* properties: ['title', { 
                 version: [
                   'user', 
                   'timestamp', 
                   'smil', ] } ],
+  */
 
   types: {
     title: String,

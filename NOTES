@@ -1,7 +1,0 @@
-I get a little confused about how to synchronize the data store on client with a document storage system on the server side.  It seems that a swarm transport data protocol would be the most effective soilution to sync once on save to the cloud of interested clients.
-
-Android and iPhone upload clients would be nice.
-
-It's important that people be able to add video, audio, images and text from anywhere on the web into their memes, so bookmarklets andextensions are necessary to make viewing any webpage a vector for exploring ones own creativity.
-
-Because so much media is being used, all media should be fingerprinted to determine if the media is already available in the system at large.  This is a processing intensive task, and should be performed by a dedicated cluster.  If an item is found to exist, it should be pruned from the dataset and its reference replaced with the highest quality version of that media that is available.
