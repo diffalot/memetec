@@ -2,19 +2,18 @@
 
 * an implementation of the metavid/kaltura html5 video sequencer designed for cultural expression rather than academic or archival use
 * Memes are stored first by title, then by user, then by timestamp
- * That means that users don't own the idea they are voicing their opinion upon through editing the video, but nonetheless they may take ownership of their manipulation of that idea through urls for their personal edits of the meme, and they can give and take edits from one another within a single meme namespace
- * url paths are:
-  * http://mem.ec/
-  * [meme title]/[username]/[timestamp] ::--> That's specific enough.
-  * [meme title]/[username] ::--> you get that user's most recent version
-  * [meme title] ::--> a version compiled from all edit differences ranked by popularity
-   * Based on parent child relationships of the video edit diffs 
-   * Popularity of diff segments are tested continually via A/B ranking, on this, the _anti-master_ of the meme
-    * merging someone else's edit segment into yours is an A+ for that diff
-    * a visitor liking a view containing that diff is an A
-    * an editor choosing not to merge your diff back into their edit is a B
-    * an editor flagging your diff based on their edit as abuse is a B-
-   * (this will not be finished by the conference.  v0.1 of http://mem.ec will display the most popular edit here)
+    * That means that users don't own the idea they are voicing their opinion upon through editing the video, but nonetheless they may take ownership of their manipulation of that idea through urls for their personal edits of the meme, and they can give and take edits from one another within a single meme namespace
+* url paths are:
+    * [meme title]/[username]/[timestamp] ::--> That's specific enough.
+    * [meme title]/[username] ::--> you get that user's most recent version
+    * [meme title] ::--> a version compiled from all edit differences ranked by popularity
+        * Based on parent child relationships of the video edit diffs 
+        * Popularity of diff segments are tested continually via A/B ranking, on this, the _anti-master_ of the meme
+            * merging someone else's edit segment into yours is an A+ for that diff
+            * a visitor liking a view containing that diff is an A
+            * an editor choosing not to merge your diff back into their edit is a B
+            * an editor flagging your diff based on their edit as abuse is a B-
+        * (this will not be finished by the conference.  v0.1 of http://mem.ec will display the most popular edit here)
 
 unfinished mem.ec source: http://github.com/papyromancer/memetec
 
