@@ -142,9 +142,10 @@ var session_store = new redis_store({
         port: settings.redis_port,
         }) 
 
-var storeAuth = function() { session_store.client.auth( settings.redis_pass ); sys.puts('connected to redis'); }
-session_store.client.addListener('connected', storeAuth);
-session_store.client.addListener('reconnected', storeAuth);
+var redisAuth = function() { session_store.client.auth( settings.redis_pass ); sys.puts('connected to redis'); }
+session_store.client.addListener('connected', redisAuth);
+session_store.client.addListener('reconnected', redisAuth);
+redisAuth();
 
 
 
@@ -179,12 +180,12 @@ app.configure(function(){
 
 
 /**
-  Express Routing
-  /:meme    --> loads up that meme
-  /         --> the home page if a session has been established
-  /login    --> start Twitter oauth
-  /callback --> register a session
-**/
+  * Express Routing
+    /:meme    --> loads up that meme
+    /         --> the home page if a session has been established
+    /login    --> start Twitter oauth
+    /callback --> register a session
+ */
 
 app.get('/login', function(req, res) {
     return Twitter.getOAuthRequestToken(function(error, token, secret, url, params) {
@@ -262,8 +263,8 @@ app.get('/', function(req, res){
 
 
 /**
-  Express Application Helpers
-**/
+  * Express Application Helpers
+ */
 
 app.dynamicHelpers({
      session: function(req, res){
@@ -272,8 +273,8 @@ app.dynamicHelpers({
      });
 
 /**
-  Let's go!
-**/
+  * Let's go!
+ */
 
 app.listen(parseInt( settings.port ), null);
 sys.puts('node.js version: ' + process.version);
