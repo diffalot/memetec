@@ -4,7 +4,7 @@
   "dependencies":{
     "express":"",
     "connect":"",
-    "connect-redis":"",
+    "connect-redis":"0.0.2",
     "redis":"",
     "mongoose":"",
     "oauth":"",
