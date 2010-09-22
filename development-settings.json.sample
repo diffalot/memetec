@@ -1,10 +1,12 @@
 {
   "environment": "Development",
   "host": "localhost",
+  "base": "http://127.0.0.1:3000/",
   "port": "3000",
+  "mongo_url": "mongodb://user:key@host:port/database",
   "redis_host": "localhost",
   "redis_port": "9379",
-  "redis_pass": "password",
+  "redis_pass": "",
   "twitter_key": "",
   "twitter_secret": ""
 }

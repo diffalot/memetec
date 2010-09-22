@@ -87,9 +87,9 @@ else {
   * Setup A MongoDB for Meme storage
  */
 
-mongoose.model('Meme', {
+/* mongoose.model('Meme', {
 
-  collection : 'memes',
+  collection : 'memes', */
 
   /* properties: ['title', { 
                 version: [
@@ -98,7 +98,7 @@ mongoose.model('Meme', {
                   'smil', ] } ],
   */
 
-  types: {
+/*  types: {
     title: String,
     version: {
       user: String,
@@ -118,22 +118,22 @@ mongoose.model('Meme', {
       }
     },
   }
-); // end of mongoose.model.meme
+); // end of mongoose.model.meme */
 
 /*
   * Setup a connection to the database ser4ver 
-*/
 
 var db = mongoose.connect(settings.mongo_url),
         Memes = mongoose.noSchema('memes',db);
 
+*/
 
 
 //db.meme.save({title: ':)', user:'papyromancer', smil: '<XML>'});
 
 /**
-  Setup the Redis connection for user/session management
-**/
+  * Setup the Redis connection for user/session management
+ */
 
 var session_store = new redis_store({ 
         maxAge: 60000 * 60 * 24 * 28,
@@ -164,8 +164,8 @@ var Twitter = new oauth.OAuth(
 
 
 /**
-  Setup the Express Application
-**/
+  * Setup the Express Application
+ */
 
 var app = express.createServer(
     connect.cookieDecoder(), 
