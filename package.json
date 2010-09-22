@@ -5,6 +5,7 @@
     "express":"",
     "connect":"",
     "connect-redis":"",
+    "redis":"",
     "mongoose":"",
     "oauth":"",
     "jade":""
