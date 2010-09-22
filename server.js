@@ -276,5 +276,6 @@ app.dynamicHelpers({
 **/
 
 app.listen(parseInt( settings.port ), null);
+sys.puts('node.js version: ' + process.version);
 sys.puts(settings.environment + " server running at http://" + settings.host + ":" + settings.port + "/");
 sys.puts(sys.inspect(settings));
