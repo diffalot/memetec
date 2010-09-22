@@ -29,12 +29,12 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-**/
+ */
 
 
 /**
-  Setup Dependencies
-**/
+  * Setup Dependencies
+ */
 
 require.paths.unshift('./npm')
 var sys = require('sys'),
@@ -47,20 +47,20 @@ var sys = require('sys'),
 
 
 /**
-  Are we in a Development or Production environment
+  * Are we in a Development or Production environment
 
-  If you're running this on your own computer, 
-  copy development-settings.json.sample to development-settings.json 
-  and modify.
+    If you're running this on your own computer, 
+    copy development-settings.json.sample to development-settings.json 
+    and modify.
 
-  Heroku: make sure you have the following environment variables included 
-  in your production environment, the handy heroku config command to do this is:
+    Heroku: make sure you have the following environment variables included 
+    in your production environment, the handy heroku config command to do this is:
 
-      heroku config:add REDIS_HOST=something.redistogo.com REDIS_PORT=9379 REDIS_PASS=something
+        heroku config:add REDIS_HOST=something.redistogo.com REDIS_PORT=9379 REDIS_PASS=something
 
-  * Make sure you don't set the PORT variable, heroku takes care of that for you.
-  http://docs.heroku.com/config-vars
-**/
+    * Make sure you don't set the PORT variable, heroku takes care of that for you.
+    http://docs.heroku.com/config-vars
+ */
 
 var settings = {};
 
@@ -87,18 +87,19 @@ else {
   * Setup A MongoDB for Meme storage
  */
 
-/* mongoose.model('Meme', {
+ mongoose.model('Meme', {
 
-  collection : 'memes', */
+  collection: 'memes', 
 
   /* properties: ['title', { 
                 version: [
                   'user', 
                   'timestamp', 
-                  'smil', ] } ],
-  */
+                  'smil', ] } ], */
 
-/*  types: {
+  properties: ['title', {version: ['user', 'timestamp', 'smil']}],
+
+  cast: {
     title: String,
     version: {
       user: String,
@@ -108,8 +109,7 @@ else {
     },
 
   indexes: [
-    [[title],[version.user],[version.timestamp]],
-    [[version.user],[version.timestamp]]
+    [['title'],['version.user'],['version.timestamp']]
     ],
 
   setters: {
@@ -118,15 +118,15 @@ else {
       }
     },
   }
-); // end of mongoose.model.meme */
+); // end of mongoose.model.meme
 
-/*
+/**
   * Setup a connection to the database ser4ver 
+ */
 
-var db = mongoose.connect(settings.mongo_url),
-        Memes = mongoose.noSchema('memes',db);
+var db = mongoose.connect(settings.mongo_url); //,
+//        Memes = mongoose.noSchema('memes',db);
 
-*/
 
 
 //db.meme.save({title: ':)', user:'papyromancer', smil: '<XML>'});
