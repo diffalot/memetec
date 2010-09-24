@@ -1,8 +1,8 @@
 /**
 
-  Memetec
+  memetec.tv
 
-  Memetec is a software platform for the creative reuse of media.
+  memetec.tv is a software platform for the creative reuse of media.
 
   Visit http://mem.ec/ and sign up to begin creating.
 
@@ -13,7 +13,7 @@
 
   Stop by #memetec on freenode.net irc to discuss this project.
 
-  Memtec - Video Editing in the Browser
+  memetec.tv - collaborative & emergent video editing in the cloud
   Copyright (C) 2010  Andrew Davis
 
   This program is free software: you can redistribute it and/or modify
@@ -47,24 +47,36 @@ var sys = require('sys'),
 
 
 /**
-  * Are we in a Development or Production environment
+  * Are we in a Development or Production Environment?
 
     If you're running this on your own computer, 
     copy development-settings.json.sample to development-settings.json 
     and modify.
 
-    Heroku: make sure you have the following environment variables included 
-    in your production environment, the handy heroku config command to do this is:
+    By default, this application assumes heroku to be the production environment,
+    and it falls back to development mode.
 
-        heroku config:add REDIS_HOST=something.redistogo.com REDIS_PORT=9379 REDIS_PASS=something
+    To execute a development environment, copy development-settings.json.sample
+    to development-settings.json and then run 
 
-    * Make sure you don't set the PORT variable, heroku takes care of that for you.
+        $ node run_dev_server.js
+
+    Should you wish to run this in application another environment, just set a PORT 
+    environment variable, and all other variables will be read from the server's 
+    environment variables as well
+
+    You will need to add all variables listed in the development-settings file for 
+    your server's environment.  On Heroku, you do that with the `heroku config` command.
+
+        heroku config:add VARIABLE=something.redistogo.com ANOTHER_VARIABLE=12345657879
+
+    * Make sure you don't set the PORT variable on heroku, heroku takes care of that for you.
     http://docs.heroku.com/config-vars
  */
 
 var settings = {};
 
-if (process.env.PORT) {
+if (process.env.PORT) { // we're in production
 
     redis_url = require('url').parse(process.env.REDISTOGO_URL);
 
@@ -79,7 +91,8 @@ if (process.env.PORT) {
     settings.twitter_key = process.env.TWITTER_KEY;
     settings.twitter_secret = process.env.TWITTER_SECRET;
     }
-else {
+else {                  // we're in development
+
     settings = JSON.parse( require('fs').readFileSync('development-settings.json', encoding='utf8') );
   }
 
@@ -95,9 +108,10 @@ else {
                 version: [
                   'user', 
                   'timestamp', 
-                  'smil', ] } ], */
+                  'smil', 
+                  'score'] } ], */
 
-  properties: ['title', {version: ['user', 'timestamp', 'smil']}],
+  properties: ['title', {version: ['user', 'timestamp', 'smil', 'score']}],
 
   cast: {
     title: String,
@@ -105,23 +119,28 @@ else {
       user: String,
       timestamp: String,
       smil: String,
+      score: String,
       },
+    mostPopular: String, //should be an index of a //meme/user/timestamp
     },
 
   indexes: [
-    [['title'],['version.user'],['version.timestamp']]
+    [['title'],['version.user'],['version.timestamp']], //meme/user/timestamp
+    [['version.user'],['version.timestamp']],           //meme/user/most-recent
+    [['title'],['version.score']],                      //meme-most-popular
     ],
 
   setters: {
     title: function(v){
-      return this.v.capitalize();
+      this = this.v.capitalize();                // CamelCase the Title
+      return this.replace(" ","");
       }
     },
   }
 ); // end of mongoose.model.meme
 
 /**
-  * Setup a connection to the database ser4ver 
+  * Setup a connection to the database server 
  */
 
 var db = mongoose.connect(settings.mongo_url); //,
