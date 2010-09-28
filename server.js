@@ -141,14 +141,21 @@ else {                  // we're in development
 
 /**
   * Setup a connection to the database server 
- */
+ 
 
-var db = mongoose.connect(settings.mongo_url); //,
-//        Memes = mongoose.noSchema('memes',db);
+var db = mongoose.connect(settings.mongo_url),
+    Meme = db.model('Meme');
+
+//add a meme
+var theFirstMeme = new Meme();
+theFirstMeme.title = ":)";
+theFirstMeme.save(function(){
+        sys.puts('Saved!');
+        });
 
 
-
-//db.meme.save({title: ':)', user:'papyromancer', smil: '<XML>'});
+//sys.puts(db.memes);
+*/
 
 /**
   * Setup the Redis connection for user/session management
@@ -232,11 +239,50 @@ app.get('/callback', function(req, res) {
     });
 
 
-app.get('/:meme', function(req, res){
-    if (req.params.meme) {
+app.get('/:meme/:username/:timestamp', function(req, res){
+    if (req.params.meme && req.params.username && req.params.timestamp) {a
+      meme = meme.find({title: req.params.meme, version:{user: req.params.username, timestamp: req.params.timestamp}});
       res.render('meme', {
         locals: {
-          meme: req.params.meme,
+          meme: meme,
+          host: settings.host,
+          base: settings.base,
+          title: req.params.meme + '  [ ' + settings.host + ' ]'
+          }
+        });
+      }
+    else {
+      // render the user's meme page if params are not defined.
+      next();
+      }
+    });
+
+app.get('/:meme/:username', function(req, res){
+    if (req.params.meme && req.params.username) {
+      meme = memes.first({title: req.params.meme, version:{user: req.params.username}});
+      res.render('meme', {
+        locals: {
+          meme: meme,
+          host: settings.host,
+          base: settings.base,
+          title: req.params.meme + '  [ ' + settings.host + ' ]'
+          }
+        });
+      }
+    else {
+      // render the root meme if params are not defined.
+      next();
+      }
+    });
+
+app.get('/:meme', function(req, res){
+    if (req.params.meme) {
+      sys.puts(Meme);
+      var meme = Meme.find({title: req.params.meme}).first();
+      sus.puts(meme);
+      res.render('meme', {
+        locals: {
+          meme: meme,
           host: settings.host,
           base: settings.base,
           title: req.params.meme + '  [ ' + settings.host + ' ]'
@@ -248,7 +294,6 @@ app.get('/:meme', function(req, res){
       next();
       }
     });
-
 
 app.get('/', function(req, res){
     if (req.session['access_token']) {
