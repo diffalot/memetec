@@ -131,9 +131,9 @@ else {                  // we're in development
     ],
 
   setters: {
-    title: function(v){
-      this = this.v.capitalize();                // CamelCase the Title
-      return this.replace(" ","");
+    title: function(t){
+      this = this.t.capitalize();                // CamelCase the Title
+      return this.t.replace(" ","");
       }
     },
   }
@@ -141,21 +141,21 @@ else {                  // we're in development
 
 /**
   * Setup a connection to the database server 
- 
+*/
 
 var db = mongoose.connect(settings.mongo_url),
     Meme = db.model('Meme');
 
 //add a meme
-var theFirstMeme = new Meme();
-theFirstMeme.title = ":)";
-theFirstMeme.save(function(){
-        sys.puts('Saved!');
-        });
+//var theFirstMeme = new Meme();
+//theFirstMeme.title = ":)";
+//theFirstMeme.save(function(){
+//        sys.puts('Saved!');
+//        });
 
 
-//sys.puts(db.memes);
-*/
+sys.puts(Meme);
+m = new Meme();
 
 /**
   * Setup the Redis connection for user/session management
@@ -277,9 +277,8 @@ app.get('/:meme/:username', function(req, res){
 
 app.get('/:meme', function(req, res){
     if (req.params.meme) {
-      sys.puts(Meme);
       var meme = Meme.find({title: req.params.meme}).first();
-      sus.puts(meme);
+      sys.puts(meme.title);
       res.render('meme', {
         locals: {
           meme: meme,
