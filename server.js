@@ -37,13 +37,14 @@
   * Setup Dependencies
  */
 
-require.paths.unshift('./npm')
+require.paths.unshift('./node_modules')
 var sys = require('sys'),
-    oauth = require('oauth'),
     connect = require('connect'),
     redis_store = require('connect-redis'),
-    mongoose = require('mongoose').Mongoose,
     express = require('express'),
+    oauth = require('oauth'),
+    mongoose = require('mongoose'),
+    Schema = mongoose.Schema
     jade = require('jade');
 
 
@@ -101,51 +102,28 @@ else {                  // we're in development
   * Setup A MongoDB for Meme storage
  */
 
- mongoose.model('Meme', {
+mongoose.connect(settings.mongo_url)
 
-  collection: 'memes', 
+var Meme = new Schema({
+  title: { type: String, index: true },
+  version: [Version]
+});
 
-  /* properties: ['title', { 
-                version: [
-                  'user', 
-                  'timestamp', 
-                  'smil', 
-                  'score'] } ], */
-
-  properties: ['title', {version: ['user', 'timestamp', 'smil', 'score']}],
-
-  cast: {
-    title: String,
-    version: {
-      user: String,
-      timestamp: String,
-      smil: String,
-      score: String,
-      },
-    mostPopular: String, //should be an index of a //meme/user/timestamp
-    },
-
-  indexes: [
-    [['title'],['version.user'],['version.timestamp']], //meme/user/timestamp
-    [['version.user'],['version.timestamp']],           //meme/user/most-recent
-    [['title'],['version.score']],                      //meme-most-popular
-    ],
-
-  setters: {
-    title: function(t){
-      this = this.t.capitalize();                // CamelCase the Title
-      return this.t.replace(" ","");
-      }
-    },
-  }
-); // end of mongoose.model.meme
+var Version = new Schema({
+  meme: { type: String, index: true },
+  user: String,
+  date: Date,
+  smil: String,
+  note: String,
+  parent: String,
+  score: Number
+});
 
 /**
   * Setup a connection to the database server 
 */
 
-var db = mongoose.connect(settings.mongo_url),
-    Meme = db.model('Meme');
+mongoose.model('Meme', Meme);
 
 //add a meme
 //var theFirstMeme = new Meme();
@@ -156,7 +134,7 @@ var db = mongoose.connect(settings.mongo_url),
 
 
 sys.puts(Meme);
-m = new Meme();
+//m = new Meme({title:"this is a meme"});
 
 /**
   * Setup the Redis connection for user/session management
@@ -198,6 +176,7 @@ var Twitter = new oauth.OAuth(
 var app = express.createServer(
     connect.cookieDecoder(), 
     connect.session({ 
+      secret: settings.session_secret,
       store: session_store      })
     );
 app.set('view engine', 'jade');

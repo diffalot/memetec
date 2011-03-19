@@ -1,14 +1,13 @@
 {
-  "name":"memetec",
-  "version":"0.0.1",
-  "dependencies":{
-    "express":"",
-    "connect":"",
-    "connect-redis":"0.0.2",
-    "redis":"",
-    "mongoose":"",
-    "oauth":"",
-    "jade":""
-    //"redis-client":"" is not yet in npm
+  "name": "memetec",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "",
+    "connect": "",
+    "connect-redis": "",
+    "redis": "",
+    "mongoose": "",
+    "oauth": "",
+    "jade": ""
   }
 }
