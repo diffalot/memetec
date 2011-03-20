@@ -35,6 +35,7 @@
 
 /**
   * Setup Dependencies
+  * Dependencies should be installed with `npm bundle`
  */
 
 require.paths.unshift('./node_modules')
@@ -102,15 +103,13 @@ else {                  // we're in development
   * Setup A MongoDB for Meme storage
  */
 
-mongoose.connect(settings.mongo_url)
 
-var Meme = new Schema({
-  title: { type: String, index: true },
+var memeModel = new Schema({
+  title: { type: String, unique: true, index: true },
   version: [Version]
 });
 
 var Version = new Schema({
-  meme: { type: String, index: true },
   user: String,
   date: Date,
   smil: String,
@@ -123,17 +122,20 @@ var Version = new Schema({
   * Setup a connection to the database server 
 */
 
-mongoose.model('Meme', Meme);
+mongoose.connect(settings.mongo_url);
+mongoose.model('Meme', memeModel);
+
+Meme = mongoose.model('Meme');
 
 //add a meme
-//var theFirstMeme = new Meme();
-//theFirstMeme.title = ":)";
-//theFirstMeme.save(function(){
-//        sys.puts('Saved!');
-//        });
+var theFirstMeme = new Meme();
+theFirstMeme.title = ":)";
+theFirstMeme.save(function(){
+        sys.puts('Saved!');
+    });
 
 
-sys.puts(Meme);
+//sys.puts(Meme);
 //m = new Meme({title:"this is a meme"});
 
 /**
@@ -174,15 +176,14 @@ var Twitter = new oauth.OAuth(
  */
 
 var app = express.createServer(
-    connect.cookieDecoder(), 
+    connect.cookieParser(), 
     connect.session({ 
       secret: settings.session_secret,
-      store: session_store      })
-    );
-app.set('view engine', 'jade');
-app.configure(function(){
-    app.use(express.staticProvider(__dirname + '/public'));
-    });
+      store: session_store
+    })
+);
+app.set( 'view engine', 'jade' );
+app.use( express.static( __dirname + '/public' ) );
 
 
 /**
@@ -220,7 +221,7 @@ app.get('/callback', function(req, res) {
 
 
 app.get('/:meme/:username/:timestamp', function(req, res){
-    if (req.params.meme && req.params.username && req.params.timestamp) {a
+    if (req.params.meme && req.params.username && req.params.timestamp) {
       meme = meme.find({title: req.params.meme, version:{user: req.params.username, timestamp: req.params.timestamp}});
       res.render('meme', {
         locals: {
