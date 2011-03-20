@@ -258,17 +258,18 @@ app.get('/:meme/:username', function(req, res){
 
 app.get('/:meme', function(req, res){
     if (req.params.meme) {
-      var meme = Meme.find({title: req.params.meme}).first();
-      sys.puts(meme.title);
-      res.render('meme', {
-        locals: {
-          meme: meme,
-          host: settings.host,
-          base: settings.base,
-          title: req.params.meme + '  [ ' + settings.host + ' ]'
+      Meme.findOne({title: req.params.meme}, function(err, meme) { 
+        sys.puts(meme.title);
+        res.render('meme', {
+          locals: {
+            meme: meme,
+            host: settings.host,
+            base: settings.base,
+            title: meme.title + '  [ ' + settings.host + ' ]'
           }
         });
-      }
+      });
+    }
     else {
       // render the home page if params are not defined.
       next();
